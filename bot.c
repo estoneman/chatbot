@@ -6,11 +6,11 @@
 #include <string.h>
 #include <assert.h>
 #include <time.h>
+#include <signal.h>
 
 #define FILE_SIZE_CAP	1024
 #define LINE_LEN_CAP	100
 #define LINE_CNT			35
-#define STEP					300000
 
 char line[LINE_LEN_CAP];
 size_t line_sz, q_idx = 0, r_idx = 0;
@@ -56,8 +56,24 @@ void random_read(char* line, const char* contents, const char* fn, int line_no)
 
 }
 
-int main()
+void inthandler(int dummy)
 {
+	printf("\e[?25h");
+	printf("\n");
+	exit(1);
+}
+
+int main(int argc, char** argv)
+{
+
+	if (argc != 2) {
+		printf("Usage: %s <usleep nanoseconds>\n", argv[0]);
+		exit(1);
+	}
+
+	int STEP = (int)strtol(argv[1], (char **)NULL, 10);	
+
+	signal(SIGINT, inthandler);
 
 	char* questions = (char*) malloc(FILE_SIZE_CAP + 1);
 	char* responses = (char*) malloc(FILE_SIZE_CAP + 1);

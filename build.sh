@@ -2,6 +2,6 @@
 
 set -xe
 
-CFLAGS="-std=c11 -o interactive interactive.c"
+CFLAGS="-std=c11 -o bot bot.c"
 
 gcc $CFLAGS
